@@ -1,4 +1,4 @@
-module github.com/vinujohn/hefty
+module github.com/jo-parker/sqs-hefty
 
 go 1.21.5
 

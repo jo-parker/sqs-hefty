@@ -14,11 +14,11 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/sqs"
 	sqsTypes "github.com/aws/aws-sdk-go-v2/service/sqs/types"
 	"github.com/google/uuid"
+	"github.com/jo-parker/sqs-hefty"
+	"github.com/jo-parker/sqs-hefty/internal/messages"
+	"github.com/jo-parker/sqs-hefty/internal/testutils"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	"github.com/vinujohn/hefty"
-	"github.com/vinujohn/hefty/internal/messages"
-	"github.com/vinujohn/hefty/internal/testutils"
 )
 
 var (

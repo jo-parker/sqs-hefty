@@ -11,9 +11,9 @@ import (
 	s3Types "github.com/aws/aws-sdk-go-v2/service/s3/types"
 	"github.com/aws/aws-sdk-go-v2/service/sqs"
 	"github.com/google/uuid"
-	"github.com/vinujohn/hefty"
-	"github.com/vinujohn/hefty/internal/messages"
-	"github.com/vinujohn/hefty/internal/testutils"
+	"github.com/jo-parker/sqs-hefty"
+	"github.com/jo-parker/sqs-hefty/internal/messages"
+	"github.com/jo-parker/sqs-hefty/internal/testutils"
 )
 
 const bucket = "hefty-benchmark-tests"
@@ -23,12 +23,12 @@ March 8, 2024 7:30pm
 go test -bench=BenchmarkSend -benchtime 1m -run BenchmarkSend
 goos: linux
 goarch: amd64
-pkg: github.com/vinujohn/hefty/tests
+pkg: github.com/jo-parker/sqs-hefty/tests
 cpu: Intel(R) Core(TM) i7-3770K CPU @ 3.50GHz
 BenchmarkSend
 BenchmarkSend-8              498         145469814 ns/op
 PASS
-ok      github.com/vinujohn/hefty/tests 97.631s
+ok      github.com/jo-parker/sqs-hefty/tests 97.631s
 */
 
 func BenchmarkSend(b *testing.B) {

@@ -1,6 +1,6 @@
 package hefty
 
-import "github.com/vinujohn/hefty/internal/messages"
+import "github.com/jo-parker/sqs-hefty/internal/messages"
 
 // ReferenceMsg determines if a message body is a reference message and returns a struct representing the reference message.
 // This function is provided to developers who are using workflows where SNS/SQS messages are being sent to endpoints like

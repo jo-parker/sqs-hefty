@@ -12,8 +12,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/aws/aws-sdk-go-v2/service/sns"
 	"github.com/google/uuid"
-	"github.com/vinujohn/hefty/internal/messages"
-	"github.com/vinujohn/hefty/internal/utils"
+	"github.com/jo-parker/sqs-hefty/internal/messages"
+	"github.com/jo-parker/sqs-hefty/internal/utils"
 )
 
 type SnsClientWrapper struct {

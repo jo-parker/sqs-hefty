@@ -6,8 +6,8 @@ import (
 	"strings"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
-	"github.com/vinujohn/hefty"
-	"github.com/vinujohn/hefty/internal/messages"
+	"github.com/jo-parker/sqs-hefty"
+	"github.com/jo-parker/sqs-hefty/internal/messages"
 )
 
 func GetMsgBodyAndAttrs(bodySize, numAttributes, attributeValueSize int) (*string, map[string]messages.MessageAttributeValue) {

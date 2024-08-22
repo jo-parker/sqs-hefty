@@ -6,8 +6,8 @@ import (
 	"encoding/json"
 	"testing"
 
-	"github.com/vinujohn/hefty/internal/messages"
-	"github.com/vinujohn/hefty/internal/testutils"
+	"github.com/jo-parker/sqs-hefty/internal/messages"
+	"github.com/jo-parker/sqs-hefty/internal/testutils"
 )
 
 func gobSerialize(msg *messages.HeftyMessage) ([]byte, error) {
