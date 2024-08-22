@@ -127,11 +127,22 @@ func (wrapper *SnsClientWrapper) PublishHeftyMessage(ctx context.Context, params
 	}
 
 	// replace incoming message body with reference message
+
 	jsonRefMsg, err := refMsg.ToJson()
 	if err != nil {
 		return nil, fmt.Errorf("unable to marshal message to json. %v", err)
 	}
-	params.Message = aws.String(string(jsonRefMsg))
+
+	snsRefMsg := messages.SNSMessage{
+		Message: string(jsonRefMsg),
+	}
+
+	jsonSNSRefMsg, err := snsRefMsg.ToJson()
+	if err != nil {
+		return nil, fmt.Errorf("unable to marshal message to json. %v", err)
+	}
+
+	params.Message = aws.String(string(jsonSNSRefMsg))
 
 	// clear out all message attributes
 	orgMsgAttr := params.MessageAttributes

@@ -24,6 +24,10 @@ type ReferenceMsg struct {
 	Md5DigestMsgAttr string `json:"md5_digest_msg_attr"`
 }
 
+type SNSMessage struct {
+	Message string `json:"default"`
+}
+
 func NewReferenceMsg(s3Region, s3Bucket, s3Key, md5Body, md5Attr string) *ReferenceMsg {
 	return &ReferenceMsg{
 		Identifier:       referenceMsgIdentifierKey,
@@ -36,6 +40,10 @@ func NewReferenceMsg(s3Region, s3Bucket, s3Key, md5Body, md5Attr string) *Refere
 }
 
 func (msg *ReferenceMsg) ToJson() ([]byte, error) {
+	return json.MarshalIndent(msg, "", "\t")
+}
+
+func (msg *SNSMessage) ToJson() ([]byte, error) {
 	return json.MarshalIndent(msg, "", "\t")
 }
 
