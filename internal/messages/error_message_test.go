@@ -3,6 +3,7 @@ package messages
 import (
 	"errors"
 	"fmt"
+	"github.com/jo-parker/sqs-hefty/types"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -22,7 +23,7 @@ func TestErrorMessageSerialization(t *testing.T) {
 	}
 }`
 	expected = fmt.Sprintf(expected, errorMsgIdentifierKey, referenceMsgIdentifierKey)
-	testRefMsg := NewReferenceMsg("testS3RegionVal", "testS3BucketVal", "testS3KeyVal", "testMd5BodyVal", "testMd5AttrVal")
+	testRefMsg := types.NewReferenceMsg("testS3RegionVal", "testS3BucketVal", "testS3KeyVal", "testMd5BodyVal", "testMd5AttrVal")
 	testErrMsg := NewErrorMsg(errors.New("testErrorVal"), testRefMsg)
 
 	// test ToJson

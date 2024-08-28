@@ -13,10 +13,11 @@ import (
 	s3manager "github.com/aws/aws-sdk-go-v2/feature/s3/manager"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/aws/aws-sdk-go-v2/service/sqs"
-	"github.com/aws/aws-sdk-go-v2/service/sqs/types"
+	sqs_types "github.com/aws/aws-sdk-go-v2/service/sqs/types"
 	"github.com/google/uuid"
 	"github.com/jo-parker/sqs-hefty/internal/messages"
 	"github.com/jo-parker/sqs-hefty/internal/utils"
+	"github.com/jo-parker/sqs-hefty/types"
 )
 
 const (
@@ -179,12 +180,12 @@ func (wrapper *SqsClientWrapper) ReceiveHeftyMessage(ctx context.Context, params
 	}
 
 	for i := range out.Messages {
-		if !messages.IsReferenceMsg(*out.Messages[i].Body) {
+		if !types.IsReferenceMsg(*out.Messages[i].Body) {
 			continue
 		}
 
 		// deserialize message body
-		refMsg, err := messages.ToReferenceMsg(*out.Messages[i].Body)
+		refMsg, err := types.ToReferenceMsg(*out.Messages[i].Body)
 		if err != nil {
 			addErrorToSqsMessage(&out.Messages[i], nil, fmt.Errorf("unable to unmarshal reference message. %v", err))
 			continue
@@ -226,7 +227,7 @@ func (wrapper *SqsClientWrapper) ReceiveHeftyMessage(ctx context.Context, params
 	return out, nil
 }
 
-func addErrorToSqsMessage(msg *types.Message, refMsg *messages.ReferenceMsg, err error) {
+func addErrorToSqsMessage(msg *sqs_types.Message, refMsg *types.ReferenceMsg, err error) {
 	errMsg := messages.NewErrorMsg(err, refMsg)
 
 	jsonErrMsg, _ := json.MarshalIndent(errMsg, "", "\t")
@@ -283,7 +284,7 @@ func (wrapper *SqsClientWrapper) DeleteHeftyMessage(ctx context.Context, params 
 }
 
 // Example queueUrl: https://sqs.us-west-2.amazonaws.com/765908583888/MyTestQueue
-func newSqsReferenceMessage(queueUrl *string, bucketName, region, msgBodyHash, msgAttrHash string) (*messages.ReferenceMsg, error) {
+func newSqsReferenceMessage(queueUrl *string, bucketName, region, msgBodyHash, msgAttrHash string) (*types.ReferenceMsg, error) {
 	const expectedTokenCount = 5
 
 	if queueUrl != nil {
@@ -292,7 +293,7 @@ func newSqsReferenceMessage(queueUrl *string, bucketName, region, msgBodyHash, m
 			return nil, fmt.Errorf("expected %d tokens when splitting queueUrl by '/' but received %d", expectedTokenCount, len(tokens))
 		} else {
 
-			return messages.NewReferenceMsg(
+			return types.NewReferenceMsg(
 				region,
 				bucketName,
 				fmt.Sprintf("%s/%s", tokens[4], uuid.New().String()), // S3Key: queueName/uuid

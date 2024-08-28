@@ -3,10 +3,13 @@ package messages
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/jo-parker/sqs-hefty/types"
 	"strings"
 )
 
 const errorMsgIdentifierKey = "b58c8bae78504da3a2e32cceeb77d342"
+
+const referenceMsgIdentifierKey = "d3131a62e0224688b77a506fd333dac4"
 
 var jsonErrorMsgPrefix string
 
@@ -15,12 +18,12 @@ func init() {
 }
 
 type ErrorMsg struct {
-	Identifier   string        `json:"identifier"` // used to identify an error message from other types of messages
-	Error        string        `json:"error"`
-	ReferenceMsg *ReferenceMsg `json:"reference_msg"`
+	Identifier   string              `json:"identifier"` // used to identify an error message from other types of messages
+	Error        string              `json:"error"`
+	ReferenceMsg *types.ReferenceMsg `json:"reference_msg"`
 }
 
-func NewErrorMsg(err error, refMsg *ReferenceMsg) *ErrorMsg {
+func NewErrorMsg(err error, refMsg *types.ReferenceMsg) *ErrorMsg {
 	return &ErrorMsg{
 		Identifier:   errorMsgIdentifierKey,
 		Error:        err.Error(),

@@ -5,6 +5,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/jo-parker/sqs-hefty/types"
 	"strings"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
@@ -133,7 +134,7 @@ func (wrapper *SnsClientWrapper) PublishHeftyMessage(ctx context.Context, params
 		return nil, fmt.Errorf("unable to marshal message to json. %v", err)
 	}
 
-	snsRefMsg := messages.SNSMessage{
+	snsRefMsg := types.SNSMessage{
 		Message: string(jsonRefMsg),
 	}
 
@@ -163,7 +164,7 @@ func (wrapper *SnsClientWrapper) PublishHeftyMessage(ctx context.Context, params
 }
 
 // Example topicArn: arn:aws:sns:us-west-2:765908583888:MyTopic
-func newSnsReferenceMessage(topicArn *string, bucketName, region, msgBodyHash, msgAttrHash string) (*messages.ReferenceMsg, error) {
+func newSnsReferenceMessage(topicArn *string, bucketName, region, msgBodyHash, msgAttrHash string) (*types.ReferenceMsg, error) {
 	const expectedTokenCount = 6
 
 	if topicArn != nil {
@@ -171,7 +172,7 @@ func newSnsReferenceMessage(topicArn *string, bucketName, region, msgBodyHash, m
 		if len(tokens) != expectedTokenCount {
 			return nil, fmt.Errorf("expected %d tokens when splitting topicArn by ':' but received %d", expectedTokenCount, len(tokens))
 		} else {
-			return messages.NewReferenceMsg(
+			return types.NewReferenceMsg(
 				region,
 				bucketName,
 				fmt.Sprintf("%s/%s", tokens[4], uuid.New().String()), // S3Key: topicArn/uuid,
