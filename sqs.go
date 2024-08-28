@@ -137,6 +137,7 @@ func (wrapper *SqsClientWrapper) SendHeftyMessage(ctx context.Context, params *s
 	if err != nil {
 		return nil, fmt.Errorf("unable to marshal json message. %v", err)
 	}
+
 	params.MessageBody = aws.String(string(jsonRefMsg))
 
 	// clear out all message attributes

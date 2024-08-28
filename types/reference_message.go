@@ -28,6 +28,10 @@ type SNSMessage struct {
 	Message string `json:"default"`
 }
 
+type SQSMessage struct {
+	Message string `json:"Message"`
+}
+
 func NewReferenceMsg(s3Region, s3Bucket, s3Key, md5Body, md5Attr string) *ReferenceMsg {
 	return &ReferenceMsg{
 		Identifier:       referenceMsgIdentifierKey,
@@ -44,6 +48,10 @@ func (msg *ReferenceMsg) ToJson() ([]byte, error) {
 }
 
 func (msg *SNSMessage) ToJson() ([]byte, error) {
+	return json.MarshalIndent(msg, "", "\t")
+}
+
+func (msg *SQSMessage) ToJson() ([]byte, error) {
 	return json.MarshalIndent(msg, "", "\t")
 }
 

@@ -97,6 +97,17 @@ func (wrapper *SnsClientWrapper) PublishHeftyMessage(ctx context.Context, params
 		return nil, fmt.Errorf("message size of %d bytes greater than allowed message size of %d bytes", msgSize, MaxHeftyMessageLengthBytes)
 	}
 
+	sqsRefMsg := types.SQSMessage{
+		Message: *params.Message,
+	}
+
+	jsonSQSRefMsg, err := sqsRefMsg.ToJson()
+	if err != nil {
+		return nil, fmt.Errorf("unable to marshal message body to json. %v", err)
+	}
+	jsonSQSRefMsgString := string(jsonSQSRefMsg)
+	params.Message = &jsonSQSRefMsgString
+
 	// create and serialize hefty message
 	heftyMsg := messages.NewHeftyMessage(params.Message, msgAttributes, msgSize)
 	serialized, bodyOffset, msgAttrOffset, err := heftyMsg.Serialize()
