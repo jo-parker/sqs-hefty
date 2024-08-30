@@ -7,6 +7,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/jo-parker/sqs-hefty/types"
+	"log"
 	"strings"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
@@ -145,6 +146,8 @@ func (wrapper *SnsClientWrapper) PublishHeftyMessage(ctx context.Context, params
 		return nil, fmt.Errorf("unable to marshal message to json. %v", err)
 	}
 
+	log.Printf("%s", string(jsonRefMsg))
+
 	snsRefMsg := types.SNSMessage{
 		Message: string(jsonRefMsg),
 	}
@@ -153,6 +156,8 @@ func (wrapper *SnsClientWrapper) PublishHeftyMessage(ctx context.Context, params
 	if err != nil {
 		return nil, fmt.Errorf("unable to marshal message to json. %v", err)
 	}
+
+	log.Printf("%s", string(jsonSNSRefMsg))
 
 	params.Message = aws.String(string(jsonSNSRefMsg))
 
@@ -165,6 +170,8 @@ func (wrapper *SnsClientWrapper) PublishHeftyMessage(ctx context.Context, params
 		params.Message = heftyMsg.Body
 		params.MessageAttributes = orgMsgAttr
 	}()
+
+	log.Printf("%+v", &params)
 
 	out, err := wrapper.Publish(ctx, params, optFns...)
 	if err != nil {
