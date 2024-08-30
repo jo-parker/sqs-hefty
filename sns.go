@@ -3,6 +3,7 @@ package hefty
 import (
 	"bytes"
 	"context"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"github.com/jo-parker/sqs-hefty/types"
@@ -101,7 +102,7 @@ func (wrapper *SnsClientWrapper) PublishHeftyMessage(ctx context.Context, params
 		Message: *params.Message,
 	}
 
-	jsonSQSRefMsg, err := sqsRefMsg.ToJson()
+	jsonSQSRefMsg, err := json.Marshal(sqsRefMsg)
 	if err != nil {
 		return nil, fmt.Errorf("unable to marshal message body to json. %v", err)
 	}
@@ -139,8 +140,7 @@ func (wrapper *SnsClientWrapper) PublishHeftyMessage(ctx context.Context, params
 	}
 
 	// replace incoming message body with reference message
-
-	jsonRefMsg, err := refMsg.ToJson()
+	jsonRefMsg, err := json.Marshal(refMsg)
 	if err != nil {
 		return nil, fmt.Errorf("unable to marshal message to json. %v", err)
 	}
@@ -149,7 +149,7 @@ func (wrapper *SnsClientWrapper) PublishHeftyMessage(ctx context.Context, params
 		Message: string(jsonRefMsg),
 	}
 
-	jsonSNSRefMsg, err := snsRefMsg.ToJson()
+	jsonSNSRefMsg, err := json.Marshal(snsRefMsg)
 	if err != nil {
 		return nil, fmt.Errorf("unable to marshal message to json. %v", err)
 	}

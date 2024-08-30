@@ -11,7 +11,7 @@ const referenceMsgIdentifierKey = "d3131a62e0224688b77a506fd333dac4"
 var jsonReferenceMsgPrefix string
 
 func init() {
-	jsonReferenceMsgPrefix = fmt.Sprintf("{\n\t\"identifier\": \"%s\",", referenceMsgIdentifierKey)
+	jsonReferenceMsgPrefix = fmt.Sprintf("{\"identifier\":\"%s\",", referenceMsgIdentifierKey)
 }
 
 // ReferenceMsg is what is sent to AWS SQS or AWS SNS in place of hefty message stored in AWS S3.
@@ -41,18 +41,6 @@ func NewReferenceMsg(s3Region, s3Bucket, s3Key, md5Body, md5Attr string) *Refere
 		Md5DigestMsgBody: md5Body,
 		Md5DigestMsgAttr: md5Attr,
 	}
-}
-
-func (msg *ReferenceMsg) ToJson() ([]byte, error) {
-	return json.MarshalIndent(msg, "", "\t")
-}
-
-func (msg *SNSMessage) ToJson() ([]byte, error) {
-	return json.MarshalIndent(msg, "", "\t")
-}
-
-func (msg *SQSMessage) ToJson() ([]byte, error) {
-	return json.MarshalIndent(msg, "", "\t")
 }
 
 func ToReferenceMsg(msg string) (*ReferenceMsg, error) {

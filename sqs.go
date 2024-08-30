@@ -133,7 +133,7 @@ func (wrapper *SqsClientWrapper) SendHeftyMessage(ctx context.Context, params *s
 	}
 
 	// replace incoming message body with reference message
-	jsonRefMsg, err := refMsg.ToJson()
+	jsonRefMsg, err := json.Marshal(refMsg)
 	if err != nil {
 		return nil, fmt.Errorf("unable to marshal json message. %v", err)
 	}
