@@ -146,8 +146,6 @@ func (wrapper *SnsClientWrapper) PublishHeftyMessage(ctx context.Context, params
 		return nil, fmt.Errorf("unable to marshal message to json. %v", err)
 	}
 
-	log.Printf("%s", string(jsonRefMsg))
-
 	snsRefMsg := types.SNSMessage{
 		Message: string(jsonRefMsg),
 	}
@@ -157,9 +155,12 @@ func (wrapper *SnsClientWrapper) PublishHeftyMessage(ctx context.Context, params
 		return nil, fmt.Errorf("unable to marshal message to json. %v", err)
 	}
 
-	log.Printf("%s", string(jsonSNSRefMsg))
+	// Correctly reformat JSON that has been serialised twice
+	refMsgStr := strings.ReplaceAll(string(jsonSNSRefMsg), "\n", "")
+	refMsgStr = strings.ReplaceAll(refMsgStr, "\\\"", "\"")
+	refMsgStr = strings.ReplaceAll(refMsgStr, "\\\\", "\\")
 
-	params.Message = aws.String(string(jsonSNSRefMsg))
+	params.Message = aws.String(refMsgStr)
 
 	// clear out all message attributes
 	orgMsgAttr := params.MessageAttributes
